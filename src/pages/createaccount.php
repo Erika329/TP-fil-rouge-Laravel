@@ -3,15 +3,17 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page d'inscription
 
+$message = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $prenom = htmlspecialchars($_POST["prenom"] ?? "");
     $nom = htmlspecialchars($_POST["nom"] ?? "");
     $email = htmlspecialchars($_POST["email"] ?? "");
     $role = htmlspecialchars($_POST["role"] ?? "");
     $mdp = htmlspecialchars($_POST["mot_de_passe"] ?? "");
-    echo "[PHP] Création de compte: $prenom $nom, email: $email, role: $role, mdp: $mdp\n";
+    $message = "Compte créé avec succès pour " . $prenom . " " . $nom . " !";
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -46,6 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input id="mot_de_passe" name="mot_de_passe" type="password" placeholder="Mot de passe">
             <div id="mdp_error" class="error-text hidden">Le mot de passe est obligatoire.</div>
             <button type="submit">S'inscrire</button>
+            <?php if ($message !== ""): ?>
+                <div class="valid-text"><?= $message ?></div>
+            <?php endif; ?>
             <div id="creation_valide" class="valid-text hidden">Votre compte a été créé avec succès.</div>
         </form>
         <br>

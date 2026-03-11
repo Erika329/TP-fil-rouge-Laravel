@@ -3,12 +3,12 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page de connexion
 
-// Traitement PHP côté serveur pour debug
+// Traitement PHP côté serveur 
+$message = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $identifiant = htmlspecialchars($_POST["identifiant"] ?? "");
     $motdepasse = htmlspecialchars($_POST["mot_de_passe"] ?? "");
-    // Message PHP dans le terminal pour montrer l'action
-    echo "[PHP] Connexion tenté avec identifiant: $identifiant, mot de passe: $motdepasse\n";
+    $message = "Connexion demandée";
 }
 ?>
 <!DOCTYPE html>
@@ -22,6 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="login-box">
             <img src="../assets/images/icon.png" alt="Icône utilisateur">
             <h2>Connexion</h2>
+            <?php if ($message !== ""): ?>
+            <div class="valid-text"><?= $message ?></div>
+            <?php endif; ?>
+
             <form id="submitform" action="" method="POST">
                 <label for="identifiant">Identifiant</label><br>
                 <input id="identifiant" name="identifiant" type="text" placeholder="Identifiant">

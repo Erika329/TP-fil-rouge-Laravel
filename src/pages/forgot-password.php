@@ -3,9 +3,10 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page mot de passe oublié
 
+$message="";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = htmlspecialchars($_POST["email"] ?? "");
-    echo "[PHP] Envoi du lien de réinitialisation pour email: $email\n";
+    $message="Mot de passe oublié";
 }
 ?>
 <!DOCTYPE html>
@@ -20,6 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="login-box">
         <img src="../assets/images/icon.png" alt="Icône utilisateur">
         <h2>Mot de passe oublié</h2>
+        <?php if ($message !== ""): ?>
+        <div class="valid-text"><?= $message ?></div>
+        <?php endif; ?>
         <form id="forgotform" action="" method="POST">
             <label for="email">Email</label><br>
             <input id="email" name="email" type="email" placeholder="email@exemple.com">

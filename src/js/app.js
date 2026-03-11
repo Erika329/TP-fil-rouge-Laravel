@@ -39,55 +39,57 @@ function check_login(){
 }	
 //Validation du formulaire de connexion 
 const f = document.querySelector('#submitform');
-if(f) {
-	//écouteur d'évènement 
-	f.addEventListener("submit", function(event){
-		// on empeche la soumission du formulaire
-		// pour éviter le rechargement de page
-		event.preventDefault();
-		console.log("Formulaire soumis");
 
-		// Utilisation de la fonction check_login pour valider le formulaire
-		const connexion_valide = document.querySelector('#connexion_valide');
-		const nb_errors = check_login();
-		console.log("nb_errors :", nb_errors);
-		// Si aucune erreur on affiche la validation de connexion
-		if(nb_errors === 0){
-			connexion_valide.classList.remove('hidden');
-			console.log("Connexion validée");
-		} else {
-			// Sinon, on masque la validation
-			connexion_valide.classList.add('hidden');
-		}
-	});
+if (f) {
+    f.addEventListener("submit", function(event) {
+
+        const connexion_valide = document.querySelector('#connexion_valide');
+        const nb_errors = check_login();
+
+        if (nb_errors > 0) {
+            event.preventDefault(); // on bloque l'envoi du formulaire seulement s'il y a des erreurs
+            connexion_valide.classList.add('hidden');
+        } else {
+            connexion_valide.classList.remove('hidden');
+        }
+
+    });
 }
 
 //------------//
 
 // Validation du formulaire mot de passe oublié
+
 const forgotForm = document.querySelector('#forgotform');
 if(forgotForm) {
-	forgotForm.addEventListener('submit', function(event) {
-		event.preventDefault();
-		console.log('Formulaire mot de passe oublié soumis');
-		const email = document.querySelector('#email');
-		const email_error = document.querySelector('#email_error');
-		const mail_valide = document.querySelector('#mail_valide');
-		let nb_errors = 0;
-		// Vérification email
-		if(!email.value) {
-			email_error.classList.remove('hidden');
-			nb_errors++;
-		} else {
-			email_error.classList.add('hidden');
-		}
-		if(nb_errors === 0) {
-			mail_valide.classList.remove('hidden');
-			console.log('Mail envoyé');
-		} else {
-			mail_valide.classList.add('hidden');
-		}
-	});
+    forgotForm.addEventListener('submit', function(event) {
+        console.log('Formulaire mot de passe oublié soumis');
+        const email = document.querySelector('#email');
+        const email_error = document.querySelector('#email_error');
+        const mail_valide = document.querySelector('#mail_valide');
+        let nb_errors = 0;
+
+        // Vérification email
+        if(!email.value) {
+            email_error.classList.remove('hidden');
+            nb_errors++;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+            email_error.textContent = "Veuillez saisir un email valide.";
+            email_error.classList.remove('hidden');
+            nb_errors++;
+        } else {
+            email_error.textContent = "L'email est obligatoire.";
+            email_error.classList.add('hidden');
+        }
+
+        if (nb_errors > 0) {
+            event.preventDefault(); // bloque si erreurs
+            mail_valide.classList.add('hidden');
+        } else {
+            mail_valide.classList.remove('hidden');
+            console.log('Mail envoyé');
+        }
+    });
 }
 
 //------------//
@@ -96,7 +98,7 @@ if(forgotForm) {
 const createForm = document.querySelector('#createform');
 if(createForm) {
 	createForm.addEventListener('submit', function(event) {
-		event.preventDefault();
+		
 		let nb_errors = 0;
 		const prenom = document.querySelector('#prenom');
 		const nom = document.querySelector('#nom');
@@ -115,8 +117,7 @@ if(createForm) {
 		console.log('nom :', nom.value);
 		console.log('email :', email.value);
 		console.log('role :', role.value);
-		console.log('mot_de_passe :', mot_de_passe.value);
-
+					
 		// Vérification prénom
 		if(!prenom.value) {
 			prenom_error.classList.remove('hidden');
@@ -135,7 +136,12 @@ if(createForm) {
 		if(!email.value) {
 			email_error.classList.remove('hidden');
 			nb_errors++;
+		}else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+			email_error.textContent = "Veuillez saisir un email valide.";
+			email_error.classList.remove('hidden');
+			nb_errors++;
 		} else {
+			email_error.textContent = "L'email est obligatoire."; // reset le message
 			email_error.classList.add('hidden');
 		}
 		// Vérification rôle
@@ -156,13 +162,15 @@ if(createForm) {
 		// Affichage du nombre d'erreurs
 		console.log('nb_errors :', nb_errors);
 
-		if(nb_errors === 0) {
+		if (nb_errors > 0) {
+			event.preventDefault(); // bloque si erreurs
+			creation_valide.classList.add('hidden');
+		} else {
 			creation_valide.classList.remove('hidden');
 			console.log('Compte créé');
-		} else {
-			creation_valide.classList.add('hidden');
 		}
 	});
+
 }
 
 //----------------------//
@@ -191,8 +199,6 @@ if(userForm) {
     }
 
     userForm.addEventListener('submit', function(event){
-        event.preventDefault();
-
         let errors = 0;
 
         if(!nom.value.trim()){ nomError.classList.remove('hidden'); errors++; } 
@@ -210,18 +216,11 @@ if(userForm) {
         //Ajout du log du nombre d'erreurs 
         console.log('Nbr erreurs :', errors);
 
-        if(errors === 0){
-            notifUser.textContent = `L'utilisateur ${prenom.value} ${nom.value} a été créé avec succès.`;
-            notifUser.style.display = 'block';
-            setTimeout(()=>{ notifUser.style.display = 'none'; }, 2500);
-
-            // Reset formulaire
-            nom.value = '';
-            prenom.value = '';
-            email.value = '';
-            role.value = '';
-        }
-    });
+        if (errors > 0) {
+        	event.preventDefault(); // bloque → PHP ne reçoit rien
+        	notifUser.style.display = 'none';
+    	} 
+	});
 }
 
 // ---------------------- //
@@ -239,7 +238,7 @@ if(!notifTicket) {
 }
 
 if(btnEnregistrer && ticketForm) {
-    btnEnregistrer.addEventListener('click', function() {
+    ticketForm.addEventListener('submit', function(event) {
         let nb_errors = 0;
 
         // Récupération des champs
@@ -289,17 +288,19 @@ if(btnEnregistrer && ticketForm) {
 
         console.log('Nombre d\'erreurs :', nb_errors);
 
-        // Si pas d'erreur, afficher notification et reset form
-        if(nb_errors === 0) {
+        if (nb_errors > 0) {
+            event.preventDefault(); // bloque si erreurs, PHP ne reçoit rien
+        } else {
+            // pas de preventDefault → PHP reçoit $_POST et affiche le message
             notifTicket.textContent = `Le ticket "${titre.value}" a été créé avec succès.`;
             notifTicket.style.display = 'block';
-            setTimeout(()=>{ notifTicket.style.display = 'none'; }, 2500);
-
-            // Reset formulaire
-            ticketForm.reset();
+			setTimeout(() => {
+                ticketForm.submit();
+            }, 2000);
         }
     });
 }
+
 
 
 
@@ -463,7 +464,7 @@ if (projectsBody && btnFiltrer) {
 const projectForm = document.querySelector('#projectform');
 if(projectForm) {
 	projectForm.addEventListener('submit', function(event) {
-		event.preventDefault();
+
 		let nb_errors = 0;
 		const nomProjet = document.querySelector('#nom-projet');
 		const client = document.querySelector('#client');
@@ -535,11 +536,13 @@ if(projectForm) {
 
 		console.log('nb_errors :', nb_errors);
 
-		if(nb_errors === 0) {
+		if(nb_errors > 0) {
+			event.preventDefault();
+			projet_valide.classList.add('hidden');
+		} else {
 			projet_valide.classList.remove('hidden');
 			console.log('Projet enregistré');
-		} else {
-			projet_valide.classList.add('hidden');
+
 		}
 	});
 }
