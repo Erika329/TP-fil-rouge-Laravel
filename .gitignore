@@ -1,3 +1,4 @@
 # Ignorer le fichier de test JS
 /src/js/test.js
 consigne.txt
+.env
