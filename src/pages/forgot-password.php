@@ -3,10 +3,27 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page mot de passe oublié
 
-$message="";
+// Connexion à la base de données
+require_once __DIR__ . "/../config/database.php";
+
+$message = "";
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = htmlspecialchars($_POST["email"] ?? "");
-    $message="Mot de passe oublié";
+
+    if (empty($email)) {
+        $message = "erreur";
+    } else {
+        // Vérification si l'email existe en BDD
+        $stmt = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = :email");
+        $stmt->execute([":email" => $email]);
+
+        if ($stmt->fetch()) {
+            $message = "Un lien de réinitialisation a été envoyé à " . $email . ".";
+        } else {
+            $message = "Aucun compte trouvé avec cet email.";
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -21,14 +38,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="login-box">
         <img src="../assets/images/icon.png" alt="Icône utilisateur">
         <h2>Mot de passe oublié</h2>
-        <?php if ($message !== ""): ?>
-        <div class="valid-text"><?= $message ?></div>
-        <?php endif; ?>
         <form id="forgotform" action="" method="POST">
             <label for="email">Email</label><br>
-            <input id="email" name="email" type="email" placeholder="email@exemple.com">
+            <input id="email" name="email" type="email" placeholder="email@exemple.com"
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
             <div id="email_error" class="error-text hidden">L'email est obligatoire.</div>
             <button type="submit">Envoyer le lien</button>
+            <!-- Message affiché par PHP après traitement -->
+            <?php if ($message !== "" && $message !== "erreur"): ?>
+                <?php if (str_contains($message, "Aucun compte")): ?>
+                    <div class="error-text"><?= $message ?></div>
+                <?php else: ?>
+                    <div class="valid-text"><?= $message ?></div>
+                <?php endif; ?>
+            <?php elseif ($message === "erreur"): ?>
+                <div class="error-text">L'email est obligatoire.</div>
+<?php endif; ?>
             <div id="mail_valide" class="valid-text hidden">Un mail vous a été envoyé.</div>
         </form>
         <br>
