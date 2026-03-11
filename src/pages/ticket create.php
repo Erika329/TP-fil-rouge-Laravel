@@ -3,27 +3,46 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page création d'un ticket
 
-require_once __DIR__ . "/../services/TicketService.php";
-
-// Tickets existants (données statiques)
-$tickets = [];
+// Connexion à la base de données
+require_once __DIR__ . "/../config/database.php";
 
 $message = "";
 
 // Traitement du formulaire côté serveur
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $ts = new TicketService($_POST);
-    $nouveau_ticket = $ts->set_new_ticket();
+    $titre = htmlspecialchars($_POST["titre"] ?? "");
+    $projet_id = $_POST["projet"] ?? "";
+    $description = htmlspecialchars($_POST["description"] ?? "");
+    $priorite = $_POST["priorite"] ?? "moyenne";
+    $type = $_POST["type"] ?? "inclus";
+    $estimation = $_POST["estimation"] ?? null;
+    $assignes = htmlspecialchars($_POST["assignes"] ?? "");
+    $statut = $_POST["statut"] ?? "nouveau";
 
     // Validation côté serveur
-    if (empty($nouveau_ticket["titre"])) {
+    if (empty($titre) || empty($projet_id)) {
         $message = "erreur";
     } else {
-        // Ajout du ticket au tableau
-        $tickets[] = $nouveau_ticket;
-        $message = "Ticket \"" . $nouveau_ticket["titre"] . "\" créé avec succès !";
+        // Insertion dans la BDD
+        $sql = "INSERT INTO tickets (titre, description, projet_id, priorite, type, estimation, assignes, statut)
+                VALUES (:titre, :description, :projet_id, :priorite, :type, :estimation, :assignes, :statut)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ":titre"       => $titre,
+            ":description" => $description,
+            ":projet_id"   => $projet_id,
+            ":priorite"    => $priorite,
+            ":type"        => $type,
+            ":estimation"  => $estimation ?: null,
+            ":assignes"    => $assignes,
+            ":statut"      => $statut
+        ]);
+        $message = "Ticket \"" . $titre . "\" créé avec succès !";
     }
 }
+
+// Récupération des projets pour le select
+$projets = $pdo->query("SELECT id, nom FROM projets")->fetchAll();
 ?>
 <!DOCTYPE html>
 <!--Erika KAMDOM FOTSO 3A FISE-->
@@ -68,10 +87,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div id="titre_error" class="error-text hidden">Le titre est obligatoire.</div>
 
             <label for="projet">Projet</label>
+            <!-- Les projets sont chargés dynamiquement depuis la BDD -->
             <select id="projet" name="projet">
                 <option value="">Sélectionner un projet</option>
-                <option value="portail" <?= ($_POST['projet'] ?? '') === 'portail' ? 'selected' : '' ?>>Portail client</option>
-                <option value="intranet" <?= ($_POST['projet'] ?? '') === 'intranet' ? 'selected' : '' ?>>Intranet RH</option>
+                <?php foreach($projets as $projet): ?>
+                    <option value="<?= $projet['id'] ?>"
+                        <?= ($_POST['projet'] ?? '') == $projet['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($projet['nom']) ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <div id="projet_error" class="error-text hidden">Le projet est obligatoire.</div>
 
@@ -122,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php if ($message !== "" && $message !== "erreur"): ?>
                 <div class="valid-text"><?= $message ?></div>
             <?php elseif ($message === "erreur"): ?>
-                <div class="error-text">Le titre est obligatoire.</div>
+                <div class="error-text">Le titre et le projet sont obligatoires.</div>
             <?php endif; ?>
 
         </form>
