@@ -3,34 +3,37 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page liste des projets
 
-// Données statiques des projets
-$projets = [
-    [
-        "nom" => "Portail client",
-        "client" => "Agence Nova",
-        "contrat" => "50h / an",
-        "heures_restantes" => "18h",
-        "statut" => "Actif",
-    ],
-    [
-        "nom" => "Intranet RH",
-        "client" => "Clinique Orion",
-        "contrat" => "30h / an",
-        "heures_restantes" => "5h",
-        "statut" => "Inactif",
-    ],
-    [
-        "nom" => "Refonte site web",
-        "client" => "Agence Nova",
-        "contrat" => "20h / an",
-        "heures_restantes" => "12h",
-        "statut" => "Actif",
-    ],
-];
+// Connexion à la base de données
+require_once __DIR__ . "/../config/database.php";
 
 // Récupération des filtres depuis l'URL via $_GET
 $filtre_client = $_GET["filtre-statut"] ?? "tous";
 $filtre_statut = $_GET["filtre-projet"] ?? "tous";
+
+// Construction de la requête SQL avec filtres
+$sql = "SELECT projets.id, projets.nom, clients.nom AS client, projets.contrat, projets.statut
+        FROM projets
+        JOIN clients ON projets.client_id = clients.id
+        WHERE 1=1";
+
+$params = [];
+
+if ($filtre_client !== "tous") {
+    $sql .= " AND LOWER(clients.nom) = :client";
+    $params[":client"] = $filtre_client;
+}
+if ($filtre_statut !== "tous") {
+    $sql .= " AND projets.statut = :statut";
+    $params[":statut"] = $filtre_statut;
+}
+
+// Exécution de la requête
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$projets = $stmt->fetchAll();
+
+// Récupération des clients pour le filtre
+$clients = $pdo->query("SELECT id, nom FROM clients")->fetchAll();
 ?>
 <!DOCTYPE html>
 <!--Erika KAMDOM FOTSO 3A FISE-->
@@ -52,7 +55,7 @@ $filtre_statut = $_GET["filtre-projet"] ?? "tous";
                         <li><a href="dashboard.html">Tableau de bord</a></li>
                         <li><a href="projects.php">Projets</a></li>
                         <li><a href="tickets.php">Tickets</a></li>
-                        <li><a href="ticket create.html">Créer un ticket</a></li>
+                        <li><a href="ticket create.php">Créer un ticket</a></li>
                         <li><a href="clients.html">Clients</a></li>
                         <li><a href="profile.php">Profil</a></li>
                         <li><a href="settings.html">Paramètres</a></li>
@@ -68,24 +71,28 @@ $filtre_statut = $_GET["filtre-projet"] ?? "tous";
                 <!-- Formulaire de filtre en GET pour filtrer côté serveur -->
                 <form id="filtre-projets-form" action="" method="GET">
                     <label for="recherche-projet">Recherche</label>
-                    <!-- La valeur est conservée après rechargement grâce à $_GET -->
                     <input id="recherche-projet" name="recherche-projet" type="search"
                         placeholder="Nom du projet"
                         value="<?= htmlspecialchars($_GET['recherche-projet'] ?? '') ?>">
 
                     <label for="filtre-statut">Client</label>
-                    <!-- "selected" est remis automatiquement sur le bon filtre après rechargement -->
                     <select id="filtre-statut" name="filtre-statut">
                         <option value="tous" <?= $filtre_client === "tous" ? "selected" : "" ?>>Tous</option>
-                        <option value="agence nova" <?= $filtre_client === "agence nova" ? "selected" : "" ?>>Agence Nova</option>
-                        <option value="clinique orion" <?= $filtre_client === "clinique orion" ? "selected" : "" ?>>Clinique Orion</option>
+                        <!-- Les clients sont chargés dynamiquement depuis la BDD -->
+                        <?php foreach($clients as $client): ?>
+                            <option value="<?= strtolower(htmlspecialchars($client['nom'])) ?>"
+                                <?= $filtre_client === strtolower($client['nom']) ? "selected" : "" ?>>
+                                <?= htmlspecialchars($client['nom']) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
 
                     <label for="filtre-projet">Statut</label>
                     <select id="filtre-projet" name="filtre-projet">
                         <option value="tous" <?= $filtre_statut === "tous" ? "selected" : "" ?>>Tous</option>
                         <option value="actif" <?= $filtre_statut === "actif" ? "selected" : "" ?>>Actif</option>
-                        <option value="inactif" <?= $filtre_statut === "inactif" ? "selected" : "" ?>>Inactif</option>
+                        <option value="termine" <?= $filtre_statut === "termine" ? "selected" : "" ?>>Terminé</option>
+                        <option value="en-attente" <?= $filtre_statut === "en-attente" ? "selected" : "" ?>>En attente</option>
                     </select>
 
                     <button type="submit" id="btn-filtrer">Filtrer</button>
@@ -98,36 +105,27 @@ $filtre_statut = $_GET["filtre-projet"] ?? "tous";
                             <th scope="col">Projet</th>
                             <th scope="col">Client</th>
                             <th scope="col">Contrat</th>
-                            <th scope="col">Heures restantes</th>
                             <th scope="col">Statut</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="projets-tbody">
-                        <!-- Boucle sur le tableau $projets avec application des filtres -->
+                        <!-- Boucle sur les projets récupérés depuis la BDD -->
                         <?php foreach($projets as $projet): ?>
-                            <?php
-                                // On saute la ligne si elle ne correspond pas au filtre client
-                                if ($filtre_client !== "tous" && strtolower($projet["client"]) !== $filtre_client) continue;
-                                // On saute la ligne si elle ne correspond pas au filtre statut
-                                if ($filtre_statut !== "tous" && strtolower($projet["statut"]) !== $filtre_statut) continue;
-                            ?>
                             <tr>
-                                <!-- htmlspecialchars pour sécuriser l'affichage -->
                                 <td><a href="project detail.html"><?= htmlspecialchars($projet["nom"]) ?></a></td>
                                 <td><?= htmlspecialchars($projet["client"]) ?></td>
                                 <td><?= htmlspecialchars($projet["contrat"]) ?></td>
-                                <td><?= htmlspecialchars($projet["heures_restantes"]) ?></td>
                                 <td><?= htmlspecialchars($projet["statut"]) ?></td>
                                 <td>
-                                    <a href="project detail.html">Voir</a> |
-                                    <a href="project create.html">Éditer</a>
+                                    <a href="project detail.html?id=<?= $projet['id'] ?>">Voir</a> |
+                                    <a href="project create.php?id=<?= $projet['id'] ?>">Éditer</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <p><a href="project create.html">Créer un projet</a></p>
+                <p><a href="project create.php">Créer un projet</a></p>
             </section>
         </main>
 

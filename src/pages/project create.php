@@ -3,22 +3,40 @@
 // TP Fil Rouge / Application de gestion de Ticket
 // Page création / édition d'un projet
 
-require_once __DIR__ . "/../services/ProjectService.php";
+// Connexion à la base de données
+require_once __DIR__ . "/../config/database.php";
 
 $message = "";
 
 // Traitement du formulaire côté serveur
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $ps = new ProjectService($_POST);
-    $nouveau_projet = $ps->set_new_project();
+    $nom = htmlspecialchars($_POST["nom-projet"] ?? "");
+    $client_id = $_POST["client"] ?? "";
+    $contrat = $_POST["contrat"] ?? "forfait";
+    $taux = $_POST["taux"] ?? null;
+    $statut = $_POST["statut"] ?? "actif";
 
     // Validation côté serveur
-    if (empty($nouveau_projet["nom"])) {
+    if (empty($nom) || empty($client_id)) {
         $message = "erreur";
     } else {
-        $message = "Projet \"" . $nouveau_projet["nom"] . "\" enregistré avec succès !";
+        // Insertion dans la BDD
+        $sql = "INSERT INTO projets (nom, client_id, contrat, taux, statut)
+                VALUES (:nom, :client_id, :contrat, :taux, :statut)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ":nom"       => $nom,
+            ":client_id" => $client_id,
+            ":contrat"   => $contrat,
+            ":taux"      => $taux ?: null,
+            ":statut"    => $statut
+        ]);
+        $message = "Projet \"" . $nom . "\" enregistré avec succès !";
     }
 }
+
+// Récupération des clients pour le select
+$clients = $pdo->query("SELECT id, nom FROM clients")->fetchAll();
 ?>
 <!DOCTYPE html>
 <!--Erika KAMDOM FOTSO 3A FISE-->
@@ -42,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <li><a href="tickets.php">Tickets</a></li>
                         <li><a href="ticket create.php">Créer un ticket</a></li>
                         <li><a href="clients.html">Clients</a></li>
-                        <li><a href="profile.html">Profil</a></li>
+                        <li><a href="profile.php">Profil</a></li>
                         <li><a href="settings.html">Paramètres</a></li>
                     </ul>
                 </nav>
@@ -58,34 +76,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <form id="projectform" class="project-form" action="" method="POST">
 
                     <label for="nom-projet">Nom du projet</label>
-                    <!-- La valeur est conservée après rechargement grâce à $_POST -->
                     <input id="nom-projet" name="nom-projet" type="text" placeholder="Nom du projet"
                         value="<?= htmlspecialchars($_POST['nom-projet'] ?? '') ?>">
                     <div id="nom_projet_error" class="error-text hidden">Le nom du projet est obligatoire.</div>
 
                     <label for="client">Client</label>
-                    <!-- "selected" est remis automatiquement sur le bon choix après rechargement -->
+                    <!-- Les clients sont chargés dynamiquement depuis la BDD -->
                     <select id="client" name="client">
                         <option value="">Sélectionner un client</option>
-                        <option value="nova" <?= ($_POST['client'] ?? '') === 'nova' ? 'selected' : '' ?>>Agence Nova</option>
-                        <option value="orion" <?= ($_POST['client'] ?? '') === 'orion' ? 'selected' : '' ?>>Clinique Orion</option>
+                        <?php foreach($clients as $client): ?>
+                            <option value="<?= $client['id'] ?>"
+                                <?= ($_POST['client'] ?? '') == $client['id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($client['nom']) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                     <div id="client_error" class="error-text hidden">Le client est obligatoire.</div>
 
-                    <label for="contrat">Contrat (heures incluses)</label>
-                    <input id="contrat" name="contrat" type="number" min="0" step="1" placeholder="Ex: 50"
-                        value="<?= htmlspecialchars($_POST['contrat'] ?? '') ?>">
+                    <label for="contrat">Type de contrat</label>
+                    <select id="contrat" name="contrat">
+                        <option value="forfait" <?= ($_POST['contrat'] ?? '') === 'forfait' ? 'selected' : '' ?>>Forfait</option>
+                        <option value="regie" <?= ($_POST['contrat'] ?? '') === 'regie' ? 'selected' : '' ?>>Régie</option>
+                    </select>
                     <div id="contrat_error" class="error-text hidden">Le contrat est obligatoire.</div>
 
-                    <label for="taux">Taux horaire (heures sup.)</label>
+                    <label for="taux">Taux horaire</label>
                     <input id="taux" name="taux" type="number" min="0" step="1" placeholder="Ex: 80"
                         value="<?= htmlspecialchars($_POST['taux'] ?? '') ?>">
                     <div id="taux_error" class="error-text hidden">Le taux horaire est obligatoire.</div>
 
-                    <label for="periode">Période de validité</label>
-                    <input id="periode" name="periode" type="text" placeholder="Ex: 2026"
-                        value="<?= htmlspecialchars($_POST['periode'] ?? '') ?>">
-                    <div id="periode_error" class="error-text hidden">La période est obligatoire.</div>
+                    <label for="statut">Statut</label>
+                    <select id="statut" name="statut">
+                        <option value="actif" <?= ($_POST['statut'] ?? '') === 'actif' ? 'selected' : '' ?>>Actif</option>
+                        <option value="termine" <?= ($_POST['statut'] ?? '') === 'termine' ? 'selected' : '' ?>>Terminé</option>
+                        <option value="en-attente" <?= ($_POST['statut'] ?? '') === 'en-attente' ? 'selected' : '' ?>>En attente</option>
+                    </select>
 
                     <label for="collaborateurs">Collaborateurs</label>
                     <input id="collaborateurs" name="collaborateurs" type="text" placeholder="Nom(s) séparé(s) par une virgule"
@@ -103,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <?php if ($message !== "" && $message !== "erreur"): ?>
                         <div class="valid-text"><?= $message ?></div>
                     <?php elseif ($message === "erreur"): ?>
-                        <div class="error-text">Le nom du projet est obligatoire.</div>
+                        <div class="error-text">Le nom du projet et le client sont obligatoires.</div>
                     <?php endif; ?>
 
                 </form>
