@@ -1,145 +1,58 @@
-# TP Fil Rouge — Ticketing
-FRONTEND + BACKEND PHP
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-## Projet
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-Une application de gestion de tickets pour une société de services.
-Les clients suivent leurs demandes et valident si besoin.
-Les collaborateurs créent et traitent les tickets pour les clients.
+## About Laravel
 
----
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## Prérequis
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-- PHP 8.5+
-- MySQL 8.0+
-- MySQL Workbench (optionnel)
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
----
+## Learning Laravel
 
-## Installation
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-1. Cloner le repo
-2. Créer un fichier `.env` à la racine du projet :
-```
-DB_HOST=localhost
-DB_PORT=3307
-DB_NAME=ticketing_db
-DB_USER=root
-DB_PASSWORD=tonmotdepasse
-```
-3. Importer le fichier `SQL.sql` dans MySQL Workbench pour créer la base de données et les tables
-4. Lancer le serveur PHP depuis la racine :
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+
+## Agentic Development
+
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+
 ```bash
-php -S localhost:8002
+composer require laravel/boost --dev
+
+php artisan boost:install
 ```
 
----
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-## Tester le projet
+## Contributing
 
-- Page de connexion : http://localhost:8002/src/pages/index.php
-- Tableau de bord : http://localhost:8002/src/pages/dashboard.html
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
----
+## Code of Conduct
 
-## Pages
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-### Authentification
-- [Connexion](src/pages/index.php)
-- [Inscription](src/pages/createaccount.php)
-- [Mot de passe oublié](src/pages/forgot-password.php)
+## Security Vulnerabilities
 
-### Collaborateur
-- [Tableau de bord](src/pages/dashboard.html)
-- [Projets](src/pages/projects.php)
-- [Détail d'un projet](src/pages/project%20detail.php)
-- [Création / édition d'un projet](src/pages/project%20create.php)
-- [Tickets](src/pages/tickets.php)
-- [Détail d'un ticket](src/pages/ticket%20detail.php)
-- [Création d'un ticket](src/pages/ticket%20create.php)
-- [Clients](src/pages/clients.html)
-- [Profil](src/pages/profile.php)
-- [Paramètres](src/pages/settings.html)
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-### Administrateur
-- [Tableau de bord admin](src/pages/dashboard-admin.html)
-- [Utilisateurs](src/pages/users.html)
-- [Projets admin](src/pages/projects-admin.html)
-- [Tickets admin](src/pages/tickets-admin.html)
-- [Clients admin](src/pages/clients-admin.html)
-- [Contrats](src/pages/contracts.html)
-- [Paramètres admin](src/pages/settings-admin.html)
+## License
 
-### Client
-- [Tableau de bord client](src/pages/dashboard-client.html)
-- [Projets client](src/pages/projects-client.html)
-- [Tickets client](src/pages/tickets-client.html)
-- [Profil client](src/pages/profile-client.html)
-- [Paramètres client](src/pages/settings-client.html)
-
----
-
-## Base de données
-
-La base de données `ticketing_db` contient les tables suivantes :
-
-- `utilisateurs` — comptes utilisateurs avec rôles
-- `clients` — clients associés aux projets
-- `projets` — projets liés aux clients
-- `tickets` — tickets liés aux projets
-
----
-
-## Services PHP
-
-Les services se trouvent dans `src/services/` :
-
-- `TicketService.php` — remplacé par PDO direct
-- `ProjectService.php` — remplacé par PDO direct
-
----
-
-## Fonctionnalités PHP et SQL
-
-- Connexion PDO sécurisée via fichier `.env`
-- Authentification avec vérification en BDD et hachage du mot de passe
-- Création de compte avec insertion en BDD
-- Création de tickets et projets avec insertion en BDD
-- Lecture et affichage des tickets et projets depuis la BDD
-- Filtrage des données côté serveur via requêtes SQL
-- Pages de détail dynamiques via `id` en paramètre URL
-- Sécurisation des affichages avec `htmlspecialchars`
-- Validation côté serveur en complément de la validation JS
-
----
-
-## JavaScript
-
-Les pages incluant du JS sont :
-
-- [Connexion](src/pages/index.php)
-- [Inscription](src/pages/createaccount.php)
-- [Mot de passe oublié](src/pages/forgot-password.php)
-- [Projets collaborateur](src/pages/projects.php)
-- [Tickets collaborateur](src/pages/tickets.php)
-- [Création / édition d'un projet](src/pages/project%20create.php)
-- [Création d'un ticket](src/pages/ticket%20create.php)
-- [Utilisateurs](src/pages/users.html)
-- [Projets admin](src/pages/projects-admin.html)
-- [Tickets admin](src/pages/tickets-admin.html)
-
-Le nombre d'erreurs des formulaires est visible dans la console du navigateur (F12).
-
----
-
-## Validation W3C
-
-https://validator.w3.org/nu/
-
----
-
-## Repo front end
-
-La partie contenant uniquement le front end se trouve ici :
-https://github.com/Erika329/TP-fil-rouge-HTML-CSS.git
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
