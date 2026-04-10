@@ -45,9 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $projets = $pdo->query("SELECT id, nom FROM projets")->fetchAll();
 ?>
 <!DOCTYPE html>
-<!--Erika KAMDOM FOTSO 3A FISE-->
-<!--TP Fil Rouge / Application de gestion de Ticket-->
-<!--Page création d'un ticket-->
+<!-- partie html du tp, le php est intégré plus haut -->
 <html lang="fr">
 <head>
     <meta charset="UTF-8">

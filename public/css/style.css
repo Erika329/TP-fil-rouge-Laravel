@@ -1,0 +1,698 @@
+/*Erika KAMDOM FOTSO 3A FISE
+Mise en page CSS
+TP Fil rouge*/
+
+/*classe pour cacher un élément*/
+
+.hidden {
+    display: none !important;
+}
+
+.error-text {
+    font-size: 0.7rem;
+    color: #b23b2c;
+    background: #ffe7df;
+    border: 1px solid #f2c2b8;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.valid-text {
+    font-size: 0.82rem;
+    color: #30b22c;
+    background: #dfffe9;
+    border: 1px solid #bff2b8;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+/* Notification ticket client */
+.notif {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2ecc40;
+    color: #fff;
+    padding: 1em 2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    font-size: 1.1em;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.notif[style*="display: block"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+/*gradient de couleur issus du site cssgrandient.io*/
+
+/*PAGE DE CONNEXION */ 
+
+/* base globale */
+body {
+    background: none;
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 1.4;
+}
+
+/* Notification ticket client */
+.notif {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2ecc40;
+    color: #fff;
+    padding: 1em 2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    font-size: 1.1em;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.notif[style*="display: block"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ============================================
+   PAGE DE CONNEXION 
+   ============================================ */
+
+/* boite de connexion */
+.body-connexion .login-box {
+    background: white;
+    width: 350px;
+    height: auto;
+    min-height: 450px;
+    margin: 150px auto;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px #b6a9a9, -5px -5px 10px #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px 20px 16px;
+}
+
+/* image */
+.body-connexion img {
+    width: 130px;
+    height: 130px;
+    position: relative;
+    top: -50px;
+    left: 0;
+}
+
+/* titres */
+.body-connexion h2 {
+    margin: -25px 0 20px 0;
+    text-align: center;
+    color: rgb(6, 12, 44);
+}
+
+/* formulaires */
+.body-connexion form {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 30px;
+    box-sizing: border-box;
+}
+
+/* champs */
+.body-connexion input {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-family: sans-serif;
+    background: transparent;
+    font-size: 16px;
+    border-radius: 25px;
+    text-shadow: 1px 1px 0 #fff;
+    box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #fff;
+}
+
+/* champs multilignes + select */
+.body-connexion textarea,
+.body-connexion select {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-family: sans-serif;
+    background: transparent;
+    font-size: 16px;
+    border-radius: 25px;
+    text-shadow: 1px 1px 0 #fff;
+    box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #fff;
+    box-sizing: border-box;
+}
+
+/* description ticket */
+.body-dash .ticket-form textarea {
+    width: 100%;
+    min-height: 180px;
+    resize: vertical;
+}
+
+/* description projet */
+.body-dash .project-form textarea {
+    width: 100%;
+    min-height: 180px;
+    resize: vertical;
+}
+
+/* etats des champs */
+.body-connexion input:focus {
+    box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #fff;
+}
+
+/* boutons */
+.body-connexion button {
+    width: 100%;
+    border: none;
+    height: 35px;
+    border-radius: 25px;
+    background: rgb(8, 16, 90);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: -5px -5px 20px rgb(50, 79, 171), 5px 5px 20px #babecc;
+    outline: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+/* survol boutons */
+.body-connexion button:hover {
+    transform: translateY(-2px);
+    box-shadow: -3px -3px 12px rgb(50, 79, 171), 3px 3px 12px #babecc;
+    opacity: 0.9;
+}
+
+/* etats boutons */
+.body-connexion button:active {
+    box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #fff;
+}
+
+/* liens (connexion) */
+.body-connexion a {
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+/* lien mot de passe oublie */
+.body-connexion .forgot-link {
+    color: black !important;
+    font-size: 16px;
+    margin: 10px 0 0 0;
+    text-decoration: none;
+}
+
+/* fond connexion */
+.body-connexion {
+    background: linear-gradient(135deg, #312c00 0.000%, #312c00 14.286%, #332e1e calc(14.286% + 1px), #332e1e 28.571%, #323149 calc(28.571% + 1px), #323149 42.857%, #2c3377 calc(42.857% + 1px), #2c3377 57.143%, #2436a2 calc(57.143% + 1px), #2436a2 71.429%, #1a39c0 calc(71.429% + 1px), #1a39c0 85.714%, #113ccc calc(85.714% + 1px) 100.000%);
+}
+
+/* ============================================
+   TABLEAU DE BORD 
+   ============================================ */
+
+.body-dash {
+    background: linear-gradient(135deg, #312c00 0.000%, #312c00 14.286%, #332e1e calc(14.286% + 1px), #332e1e 28.571%, #323149 calc(28.571% + 1px), #323149 42.857%, #2c3377 calc(42.857% + 1px), #2c3377 57.143%, #2436a2 calc(57.143% + 1px), #2436a2 71.429%, #1a39c0 calc(71.429% + 1px), #1a39c0 85.714%, #113ccc calc(85.714% + 1px) 100.000%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    color: white;
+    padding: 0;
+}
+
+/* styles roles */
+.role-client .tableau_de_bord h1::after {
+    content: " • CLIENT";
+    font-size: 0.9rem;
+    color: #cfe2ff;
+}
+
+.role-collaborateur .tableau_de_bord h1::after {
+    content: " • COLLABORATEUR";
+    font-size: 0.9rem;
+    color: #d7ffd8;
+}
+
+.role-admin .tableau_de_bord h1::after {
+    content: " • ADMIN";
+    font-size: 0.9rem;
+    color: #ffe5b4;
+}
+
+/* header / barre de navigation */
+.body-dash .tableau_de_bord {
+    color: white;
+    padding: 10px;
+    background: linear-gradient(90deg, #121216 0.000%, #121216 7.692%, #16171a calc(7.692% + 1px), #16171a 15.385%, #1a1b1f calc(15.385% + 1px), #1a1b1f 23.077%, #1f2023 calc(23.077% + 1px), #1f2023 30.769%, #232427 calc(30.769% + 1px), #232427 38.462%, #27282b calc(38.462% + 1px), #27282b 46.154%, #2b2c2f calc(46.154% + 1px), #2b2c2f 53.846%, #2f3033 calc(53.846% + 1px), #2f3033 61.538%, #323337 calc(61.538% + 1px), #323337 69.231%, #36373a calc(69.231% + 1px), #36373a 76.923%, #38393d calc(76.923% + 1px), #38393d 84.615%, #3b3c40 calc(84.615% + 1px), #3b3c40 92.308%, #3d3e42 calc(92.308% + 1px) 100.000%);
+    position: relative;
+}
+
+/* navigation */
+.body-dash .Navigation_principale ul {
+    list-style: none;
+    display: flex;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 1.05rem;
+}
+
+/* boutons du tableau de bord (liste) */
+.body-dash .Navigation_principale li {
+    background: #f7fafc;
+    color: #23408e;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    box-shadow: 0 1px 4px rgba(44,83,100,0.08);
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    display: flex;
+    align-items: center;
+    padding: 8px 22px;
+    margin: 0 2px;
+    border: 1px solid #e0e6ed;
+    letter-spacing: 0.2px;
+}
+
+.body-dash .Navigation_principale li:hover {
+    background: #e3eafc;
+    color: #1a2a5c;
+    box-shadow: 0 2px 8px rgba(44,83,100,0.13);
+}
+
+/* liens navigation */
+.body-dash .Navigation_principale a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* bouton deconnexion */
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: linear-gradient(90deg, #203a43 0%, #2c5364 100%);
+    color: #f5f6fa;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 10;
+    transition: opacity 0.2s, background 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.logout-btn a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.logout-btn:hover {
+    opacity: 0.7;
+    background: linear-gradient(90deg, #2c5364 0%, #203a43 100%);
+}
+
+.logout-btn a:hover {
+    color: #e0e0e0;
+}
+
+/* liens generaux (tableau de bord) */
+.body-dash a {
+    color: white;
+    text-decoration: none;
+}
+
+/* resume dashboard */
+.body-dash .resume {
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(44,83,100,0.08);
+    border-radius: 8px;
+    color: #222;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    list-style: none;
+    width: 65%;
+    max-width: 900px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.body-dash .resume li {
+    color: #23408e;
+    background: transparent;
+    border-right: 1px solid #e0e6ed;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 16px 0;
+    flex: 1 1 0;
+    text-align: center;
+    min-width: 120px;
+    max-width: 200px;
+}
+
+.body-dash .resume li:last-child {
+    border-right: none;
+}
+
+/* pied de page */
+.footer {
+    margin-top: auto;
+    text-align: center;
+    color: #f5f6fa;
+    opacity: 0.8;
+    font-size: 0.97rem;
+    padding: 20px;
+}
+
+/* conteneur principal */
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px 40px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 1;
+}
+
+/* blocs de contenu */
+section {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+section h2 {
+    margin: 0 0 16px 0;
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.body-dash table a {
+    color: #1a2a5c;
+    text-decoration: underline;
+}
+
+.body-dash table a:hover {
+    color: #0f1f4f;
+}
+
+th,
+td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+thead th {
+    background: #f1f4ff;
+    color: #1a2a5c;
+    font-weight: 600;
+}
+
+caption {
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* formulaires */
+form {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+form label {
+    color: white;
+    font-weight: 500;
+    display: block;
+    margin-top: 8px;
+}
+
+form input,
+form textarea,
+form select {
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.95);
+    color: #111;
+    font-family: inherit;
+}
+
+form input::placeholder,
+form textarea::placeholder {
+    color: #999;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: none;
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.4);
+}
+
+form button {
+    background: linear-gradient(90deg, #203a43 0%, #2c5364 100%);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    margin-top: 8px;
+}
+
+form button:hover {
+    opacity: 0.8;
+}
+
+/* FORMULAIRES DASHBOARD */
+.body-dash section label {
+    display: block;
+    color: white;
+    font-weight: 500;
+    margin-bottom: 6px;
+    margin-top: 16px;
+    font-size: 0.95rem;
+}
+
+.body-dash section label:first-of-type {
+    margin-top: 0;
+}
+
+.body-dash section input,
+.body-dash section select,
+.body-dash section textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    color: #333;
+    font-family: inherit;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.9);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.body-dash section input:focus,
+.body-dash section select:focus,
+.body-dash section textarea:focus {
+    outline: none;
+    border-color: rgba(255,255,255,0.6);
+    background: white;
+    box-shadow: 0 0 8px rgba(255,255,255,0.2);
+}
+
+.body-dash section input::placeholder {
+    color: #999;
+}
+
+.body-dash section textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.body-dash section h2 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.body-dash section button {
+    background: linear-gradient(90deg, #203a43 0%, #2c5364 100%);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-top: 16px;
+    transition: opacity 0.2s;
+}
+
+.body-dash section button:hover {
+    opacity: 0.9;
+}
+
+.body-dash section .error-text {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff4444;
+    background: transparent;
+    border: none;
+    padding: 4px 0;
+    margin-top: -6px;
+    margin-bottom: 12px;
+}
+
+/* listes */
+ul, ol {
+    padding-left: 20px;
+}
+
+/* responsive */
+@media (max-width: 1024px) {
+    .resume {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .body-connexion .login-box {
+        width: min(90%, 380px);
+        margin: 80px auto;
+    }
+
+    .body-dash .tableau_de_bord {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .body-dash .Navigation_principale ul {
+        gap: 8px;
+    }
+
+    .body-dash .Navigation_principale li {
+        padding: 6px 14px;
+        font-size: 0.9rem;
+    }
+
+    .logout-btn {
+        position: static;
+        margin-top: 10px;
+    }
+
+    main {
+        padding: 15px 12px 30px 12px;
+    }
+
+    th,
+    td {
+        padding: 8px 6px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .body-connexion .login-box {
+        width: 90%;
+        margin: 60px auto;
+        padding: 20px 12px;
+    }
+
+    .body-dash .Navigation_principale li {
+        width: auto;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+
+    .resume {
+        flex-direction: column;
+    }
+
+    .resume li {
+        border-right: none;
+        border-bottom: 1px solid #e0e6ed;
+        min-width: 100%;
+        max-width: none;
+        padding: 12px 0;
+    }
+
+    .resume li:last-child {
+        border-bottom: none;
+    }
+
+    form {
+        padding: 12px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

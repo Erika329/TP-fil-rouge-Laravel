@@ -22,3 +22,15 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Fichiers perso 
+TODO.md
+erika-guide-*
+erika-notions-complete.md
+erika-tests-complete.md
+erika-db-check.md
+generate-guide.php
+src/
+demo.htm
+ETAPE_5_RESUMÉ.md
+

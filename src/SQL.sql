@@ -37,5 +37,5 @@ CREATE TABLE tickets (
     estimation DECIMAL(10,2),
     assignes VARCHAR(255),
     statut ENUM('nouveau', 'en-cours', 'en-attente', 'termine', 'a-valider') NOT NULL DEFAULT 'nouveau',
-    FOREIGN KEY (projet_id) REFERENCES tickets(id)
-);
+    FOREIGN KEY (projet_id) REFERENCES projets(id)
+    ;)

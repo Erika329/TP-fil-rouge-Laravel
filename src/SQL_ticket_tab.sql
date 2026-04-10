@@ -5,8 +5,8 @@ INSERT INTO clients (nom, email) VALUES
 ('Tech Corp', 'contact@techcorp.fr');
 
 INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, role) VALUES
-('Erika', 'Kamdom', 'erika@exemple.fr', 'password123', 'collaborateur'),
-('Admin', 'System', 'admin@exemple.fr', 'password123', 'admin');
+('Erika', 'Kamdom', 'erika@exemple.fr', '$2y$12$T4Qjw3E4VDQYZUNwK8vrseCZkmsii9fyf7nrs9gQG9ZpJWrG.aiG6', 'collaborateur'),
+('Admin', 'System', 'admin@exemple.fr', '$2y$12$T4Qjw3E4VDQYZUNwK8vrseCZkmsii9fyf7nrs9gQG9ZpJWrG.aiG6', 'admin');
 
 INSERT INTO projets (nom, client_id, contrat, taux, statut) VALUES
 ('Portail client', 1, 'forfait', 500.00, 'actif'),
